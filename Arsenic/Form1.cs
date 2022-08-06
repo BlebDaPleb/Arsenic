@@ -54,8 +54,15 @@ namespace Arsenic
 
         #endregion
 
-        Entity player = new Entity();
-        List<Entity> entities = new List<Entity>();
+        public static Entity player = new Entity();
+        public List<Entity> entitiesAB = new List<Entity>();
+        public static List<Entity> entitiesWH = new List<Entity>();
+
+        public static bool ShowEnemyWH;
+        public static bool ShowTeamWH;
+        public static bool SnaplineEnabledBool;
+        public static bool EnemySnapline;
+        public static bool TeamSnapLine;
 
         Form2 f2 = new Form2();
 
@@ -81,8 +88,9 @@ namespace Arsenic
 
             Thread shm = new Thread(ShowHideMenu);
 
-            Thread tb = new Thread(doTriggerbot);
-            Thread ab = new Thread(doAimbot);
+            Thread tb = new Thread(doTriggerbot) { IsBackground = true };
+            Thread ab = new Thread(doAimbot) { IsBackground = true };
+            Thread wh = new Thread(doESP) { IsBackground = true };
 
             m.GetProcess(processName);
             
@@ -90,7 +98,9 @@ namespace Arsenic
 
             tb.Start();
             ab.Start();
+            wh.Start();
 
+            // Makes form 2 hidden at first
             f2.Hide();
 
         }
@@ -105,11 +115,11 @@ namespace Arsenic
                     {
 
                         updateLocal();
-                        updateEntities();
+                        updateEntitiesAB();
 
-                        entities = entities.OrderBy(o => o.magnitude).ToList();
+                        entitiesAB = entitiesAB.OrderBy(o => o.magnitude).ToList();
 
-                        Aim(entities[0]);
+                        Aim(entitiesAB[0]);
 
                     }
                 }
@@ -168,28 +178,49 @@ namespace Arsenic
         void Aim(Entity ent)
         {
 
-            // X
+            if (ent.team > 1)
+            {
+                // X
 
-            float deltaX = (ent.x) - player.x;
-            float deltaY = ent.y - player.y;
+                float deltaX = (ent.x) - player.x;
+                float deltaY = ent.y - player.y;
 
-            float X = (float)(Math.Atan2(deltaY, deltaX) * 180 / Math.PI);
+                float X = (float)(Math.Atan2(deltaY, deltaX) * 180 / Math.PI);
 
-            // Y
+                // Y
 
-            float deltaZ = ent.z - player.z;
-            double dist = Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
+                float deltaZ = ent.z - player.z;
+                double dist = Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
 
-            float Y = -(float)(Math.Atan2(deltaZ, dist) * 180 / Math.PI);
+                float Y = -(float)(Math.Atan2(deltaZ, dist) * 180 / Math.PI);
 
-            // Writing
+                // Writing
 
-            var buffer = m.ReadPointer(m.GetModuleBase("engine.dll"), CLIENTSTATE);
+                var buffer = m.ReadPointer(m.GetModuleBase("engine.dll"), CLIENTSTATE);
 
-            m.WriteBytes(buffer, VIEWANGLES, BitConverter.GetBytes(Y));
-            m.WriteBytes(buffer, VIEWANGLES + 0x4, BitConverter.GetBytes(X));
+                m.WriteBytes(buffer, VIEWANGLES, BitConverter.GetBytes(Y));
+                m.WriteBytes(buffer, VIEWANGLES + 0x4, BitConverter.GetBytes(X));
+            }
 
         }
+
+        
+        void doESP()
+        {
+            while (true)
+            {
+                if (WHEnabled.Checked)
+                {
+                    updateLocal();
+                    updateEntitiesWH();
+                    f2.refreshPanel();
+                }
+
+                Thread.Sleep(10);
+            }
+
+        }
+        
 
         float calcMag(Entity e)
         {
@@ -211,9 +242,9 @@ namespace Arsenic
 
         }
 
-        void updateEntities()
+        void updateEntitiesAB()
         {
-            entities.Clear();
+            entitiesAB.Clear();
 
             for(int i = 1; i < 64; i++)
             {
@@ -221,7 +252,7 @@ namespace Arsenic
                 var buffer = m.ReadPointer(m.GetModuleBase("client.dll"), ENTITYLIST + i * 0x10);
                 var tm = BitConverter.ToInt32(m.ReadBytes(buffer, TEAM, 4), 0);
                 var dorm = BitConverter.ToInt32(m.ReadBytes(buffer, DORMANT, 4), 0);
-                var ls = BitConverter.ToInt32(m.ReadBytes(buffer, LIFESTATE, 4), 0);
+                var ls = BitConverter.ToInt32(m.ReadBytes(buffer, LIFESTATE, 4), 0);                
                 var hp = BitConverter.ToInt32(m.ReadBytes(buffer, HEALTH, 4), 0);
 
                 if (ls != 0 || dorm != 0 || tm == player.team)
@@ -229,7 +260,7 @@ namespace Arsenic
 
                 var coords = m.ReadBytes(buffer, XYZ, 12);
 
-                var ent = new Entity();
+                Entity ent = new Entity();
 
                 ent.x = BitConverter.ToSingle(coords, 0);
                 ent.y = BitConverter.ToSingle(coords, 4);
@@ -240,9 +271,109 @@ namespace Arsenic
 
                 ent.magnitude = calcMag(ent);
 
-                entities.Add(ent);
+                entitiesAB.Add(ent);
 
             }
+        }
+
+        void updateEntitiesWH()
+        {
+            entitiesWH.Clear();
+
+            for (int i = 1; i < 64; i++)
+            {
+
+                var buffer = m.ReadPointer(m.GetModuleBase("client.dll"), ENTITYLIST + i * 0x10);
+                var tm = BitConverter.ToInt32(m.ReadBytes(buffer, TEAM, 4), 0);
+                var dorm = BitConverter.ToInt32(m.ReadBytes(buffer, DORMANT, 4), 0);
+                var ls = BitConverter.ToInt32(m.ReadBytes(buffer, LIFESTATE, 4), 0); var hp = BitConverter.ToInt32(m.ReadBytes(buffer, HEALTH, 4), 0);
+
+                if (ls != 0 || dorm != 0)
+                    continue;
+
+                var coords = m.ReadBytes(buffer, XYZ, 12);
+
+                Entity ent = new Entity();
+
+                ent.x = BitConverter.ToSingle(coords, 0);
+                ent.y = BitConverter.ToSingle(coords, 4);
+                ent.z = BitConverter.ToSingle(coords, 8);
+                ent.team = tm;
+                ent.lifestate = ls;
+                ent.health = hp;
+
+                ent.magnitude = calcMag(ent);
+
+                ent.bottom = WorldToScreen(readMatrix(), ent.x, ent.y, ent.z - 15, f2.Width, f2.Height);
+                ent.top = WorldToScreen(readMatrix(), ent.x, ent.y, ent.z + 58, f2.Width, f2.Height);
+
+                entitiesWH.Add(ent);
+
+            }
+        }
+
+        Point WorldToScreen(Viewmatrix mtx, float x, float y, float z, int width, int height)
+        {
+
+            var twoD = new Point();
+
+            float screenW = (mtx.m41 * x) + (mtx.m42 * y) + (mtx.m43 * z) + mtx.m44;
+
+            if (screenW > 0.001f)
+            {
+
+                float screenX = (mtx.m11 * x) + (mtx.m12 * y) + (mtx.m13 * z) + mtx.m14;
+                float screenY = (mtx.m21 * x) + (mtx.m22 * y) + (mtx.m23 * z) + mtx.m24;
+
+                float camX = width / 2f;
+                float camY = height / 2f;
+
+                float X = camX + (camX * screenX / screenW);
+                float Y = camY - (camY * screenY / screenW);
+
+                twoD.X = (int)X;
+                twoD.Y = (int)Y;
+
+                return twoD;
+
+            }
+            else
+            {
+                return new Point(-99, -99);
+            }
+        }
+
+        Viewmatrix readMatrix()
+        {
+
+            var matrix = new Viewmatrix();
+
+            var buffer = new byte[16 * 4];
+
+            buffer = m.ReadBytes(m.GetModuleBase("client.dll"), VIEWMATRIX, buffer.Length);
+
+            matrix.m11 = BitConverter.ToSingle(buffer, 0 * 4);
+            matrix.m12 = BitConverter.ToSingle(buffer, 1 * 4);
+            matrix.m13 = BitConverter.ToSingle(buffer, 2 * 4);
+            matrix.m14 = BitConverter.ToSingle(buffer, 3 * 4);
+
+            matrix.m21 = BitConverter.ToSingle(buffer, 4 * 4);
+            matrix.m22 = BitConverter.ToSingle(buffer, 5 * 4);
+            matrix.m23 = BitConverter.ToSingle(buffer, 6 * 4);
+            matrix.m24 = BitConverter.ToSingle(buffer, 7 * 4);
+
+            matrix.m31 = BitConverter.ToSingle(buffer, 8 * 4);
+            matrix.m32 = BitConverter.ToSingle(buffer, 9 * 4);
+            matrix.m33 = BitConverter.ToSingle(buffer, 10 * 4);
+            matrix.m34 = BitConverter.ToSingle(buffer, 11 * 4);
+
+            matrix.m41 = BitConverter.ToSingle(buffer, 12 * 4);
+            matrix.m42 = BitConverter.ToSingle(buffer, 13 * 4);
+            matrix.m43 = BitConverter.ToSingle(buffer, 14 * 4);
+            matrix.m44 = BitConverter.ToSingle(buffer, 15 * 4);
+
+            return matrix;
+
         }
 
         void ShowHideMenu()
@@ -281,15 +412,57 @@ namespace Arsenic
             Application.Exit();
         }
 
-        private void checkBox6_CheckedChanged(object sender, EventArgs e)
+        #region WH UI
+
+        private void WHEnabled_CheckedChanged(object sender, EventArgs e)
         {
-            if (checkBox6.Checked)
-            {
-                
-                f2.ShowDialog();
+            if (WHEnabled.Checked)
                 f2.Show();
-                
-            }
+            else
+                f2.Hide();
         }
+
+        private void ShowEnemy_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ShowEnemy.Checked)
+                ShowEnemyWH = true;
+            else
+                ShowEnemyWH = false;
+        }
+
+        private void ShowTeam_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ShowTeam.Checked)
+                ShowTeamWH = true;
+            else
+                ShowTeamWH = false;
+        }
+
+        private void SnaplineEnabled_CheckedChanged(object sender, EventArgs e)
+        {
+            if (SnaplineEnabled.Checked)
+                SnaplineEnabledBool = true;
+            else
+                SnaplineEnabledBool = false;
+        }
+
+        private void ShowEnemySnap_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ShowEnemySnap.Checked)
+                EnemySnapline = true;
+            else
+                EnemySnapline = false;
+        }
+
+        private void ShowTeamSnapline_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ShowTeamSnapline.Checked)
+                TeamSnapLine = true;
+            else
+                TeamSnapLine = false;
+        }
+
+        #endregion
+
     }
 }

@@ -30,8 +30,12 @@
         {
             this.Panel_Main = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.checkBox5 = new System.Windows.Forms.CheckBox();
-            this.checkBox6 = new System.Windows.Forms.CheckBox();
+            this.ShowTeamSnapline = new System.Windows.Forms.CheckBox();
+            this.ShowEnemySnap = new System.Windows.Forms.CheckBox();
+            this.SnaplineEnabled = new System.Windows.Forms.CheckBox();
+            this.ShowTeam = new System.Windows.Forms.CheckBox();
+            this.ShowEnemy = new System.Windows.Forms.CheckBox();
+            this.WHEnabled = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.checkBox3 = new System.Windows.Forms.CheckBox();
             this.AimbotEnabled = new System.Windows.Forms.CheckBox();
@@ -62,8 +66,12 @@
             // 
             // groupBox3
             // 
-            this.groupBox3.Controls.Add(this.checkBox5);
-            this.groupBox3.Controls.Add(this.checkBox6);
+            this.groupBox3.Controls.Add(this.ShowTeamSnapline);
+            this.groupBox3.Controls.Add(this.ShowEnemySnap);
+            this.groupBox3.Controls.Add(this.SnaplineEnabled);
+            this.groupBox3.Controls.Add(this.ShowTeam);
+            this.groupBox3.Controls.Add(this.ShowEnemy);
+            this.groupBox3.Controls.Add(this.WHEnabled);
             this.groupBox3.Font = new System.Drawing.Font("Comfortaa", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(132)))), ((int)(((byte)(252)))));
             this.groupBox3.Location = new System.Drawing.Point(376, 78);
@@ -74,28 +82,77 @@
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "ESP";
             // 
-            // checkBox5
+            // ShowTeamSnapline
             // 
-            this.checkBox5.AutoSize = true;
-            this.checkBox5.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox5.Location = new System.Drawing.Point(17, 52);
-            this.checkBox5.Name = "checkBox5";
-            this.checkBox5.Size = new System.Drawing.Size(49, 25);
-            this.checkBox5.TabIndex = 1;
-            this.checkBox5.Text = "Idk";
-            this.checkBox5.UseVisualStyleBackColor = true;
+            this.ShowTeamSnapline.AutoSize = true;
+            this.ShowTeamSnapline.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShowTeamSnapline.Location = new System.Drawing.Point(17, 153);
+            this.ShowTeamSnapline.Name = "ShowTeamSnapline";
+            this.ShowTeamSnapline.Size = new System.Drawing.Size(130, 25);
+            this.ShowTeamSnapline.TabIndex = 5;
+            this.ShowTeamSnapline.Text = "Team Snapline";
+            this.ShowTeamSnapline.UseVisualStyleBackColor = true;
+            this.ShowTeamSnapline.CheckedChanged += new System.EventHandler(this.ShowTeamSnapline_CheckedChanged);
             // 
-            // checkBox6
+            // ShowEnemySnap
             // 
-            this.checkBox6.AutoSize = true;
-            this.checkBox6.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox6.Location = new System.Drawing.Point(17, 30);
-            this.checkBox6.Name = "checkBox6";
-            this.checkBox6.Size = new System.Drawing.Size(86, 25);
-            this.checkBox6.TabIndex = 0;
-            this.checkBox6.Text = "Enabled";
-            this.checkBox6.UseVisualStyleBackColor = true;
-            this.checkBox6.CheckedChanged += new System.EventHandler(this.checkBox6_CheckedChanged);
+            this.ShowEnemySnap.AutoSize = true;
+            this.ShowEnemySnap.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShowEnemySnap.Location = new System.Drawing.Point(17, 129);
+            this.ShowEnemySnap.Name = "ShowEnemySnap";
+            this.ShowEnemySnap.Size = new System.Drawing.Size(139, 25);
+            this.ShowEnemySnap.TabIndex = 4;
+            this.ShowEnemySnap.Text = "Enemy Snapline";
+            this.ShowEnemySnap.UseVisualStyleBackColor = true;
+            this.ShowEnemySnap.CheckedChanged += new System.EventHandler(this.ShowEnemySnap_CheckedChanged);
+            // 
+            // SnaplineEnabled
+            // 
+            this.SnaplineEnabled.AutoSize = true;
+            this.SnaplineEnabled.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SnaplineEnabled.Location = new System.Drawing.Point(17, 105);
+            this.SnaplineEnabled.Name = "SnaplineEnabled";
+            this.SnaplineEnabled.Size = new System.Drawing.Size(90, 25);
+            this.SnaplineEnabled.TabIndex = 3;
+            this.SnaplineEnabled.Text = "Snapline";
+            this.SnaplineEnabled.UseVisualStyleBackColor = true;
+            this.SnaplineEnabled.CheckedChanged += new System.EventHandler(this.SnaplineEnabled_CheckedChanged);
+            // 
+            // ShowTeam
+            // 
+            this.ShowTeam.AutoSize = true;
+            this.ShowTeam.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShowTeam.Location = new System.Drawing.Point(17, 74);
+            this.ShowTeam.Name = "ShowTeam";
+            this.ShowTeam.Size = new System.Drawing.Size(106, 25);
+            this.ShowTeam.TabIndex = 2;
+            this.ShowTeam.Text = "Show Team";
+            this.ShowTeam.UseVisualStyleBackColor = true;
+            this.ShowTeam.CheckedChanged += new System.EventHandler(this.ShowTeam_CheckedChanged);
+            // 
+            // ShowEnemy
+            // 
+            this.ShowEnemy.AutoSize = true;
+            this.ShowEnemy.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShowEnemy.Location = new System.Drawing.Point(17, 52);
+            this.ShowEnemy.Name = "ShowEnemy";
+            this.ShowEnemy.Size = new System.Drawing.Size(115, 25);
+            this.ShowEnemy.TabIndex = 1;
+            this.ShowEnemy.Text = "Show Enemy";
+            this.ShowEnemy.UseVisualStyleBackColor = true;
+            this.ShowEnemy.CheckedChanged += new System.EventHandler(this.ShowEnemy_CheckedChanged);
+            // 
+            // WHEnabled
+            // 
+            this.WHEnabled.AutoSize = true;
+            this.WHEnabled.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WHEnabled.Location = new System.Drawing.Point(17, 30);
+            this.WHEnabled.Name = "WHEnabled";
+            this.WHEnabled.Size = new System.Drawing.Size(86, 25);
+            this.WHEnabled.TabIndex = 0;
+            this.WHEnabled.Text = "Enabled";
+            this.WHEnabled.UseVisualStyleBackColor = true;
+            this.WHEnabled.CheckedChanged += new System.EventHandler(this.WHEnabled_CheckedChanged);
             // 
             // groupBox2
             // 
@@ -229,8 +286,12 @@
         private System.Windows.Forms.CheckBox checkBox3;
         private System.Windows.Forms.CheckBox AimbotEnabled;
         private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.CheckBox checkBox5;
-        private System.Windows.Forms.CheckBox checkBox6;
+        private System.Windows.Forms.CheckBox ShowEnemy;
+        private System.Windows.Forms.CheckBox WHEnabled;
+        private System.Windows.Forms.CheckBox SnaplineEnabled;
+        private System.Windows.Forms.CheckBox ShowTeam;
+        private System.Windows.Forms.CheckBox ShowTeamSnapline;
+        private System.Windows.Forms.CheckBox ShowEnemySnap;
     }
 }
 
