@@ -85,6 +85,8 @@
             // ShowTeamSnapline
             // 
             this.ShowTeamSnapline.AutoSize = true;
+            this.ShowTeamSnapline.Checked = true;
+            this.ShowTeamSnapline.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ShowTeamSnapline.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ShowTeamSnapline.Location = new System.Drawing.Point(17, 153);
             this.ShowTeamSnapline.Name = "ShowTeamSnapline";
@@ -97,6 +99,8 @@
             // ShowEnemySnap
             // 
             this.ShowEnemySnap.AutoSize = true;
+            this.ShowEnemySnap.Checked = true;
+            this.ShowEnemySnap.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ShowEnemySnap.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ShowEnemySnap.Location = new System.Drawing.Point(17, 129);
             this.ShowEnemySnap.Name = "ShowEnemySnap";
@@ -109,6 +113,8 @@
             // SnaplineEnabled
             // 
             this.SnaplineEnabled.AutoSize = true;
+            this.SnaplineEnabled.Checked = true;
+            this.SnaplineEnabled.CheckState = System.Windows.Forms.CheckState.Checked;
             this.SnaplineEnabled.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.SnaplineEnabled.Location = new System.Drawing.Point(17, 105);
             this.SnaplineEnabled.Name = "SnaplineEnabled";
@@ -121,6 +127,8 @@
             // ShowTeam
             // 
             this.ShowTeam.AutoSize = true;
+            this.ShowTeam.Checked = true;
+            this.ShowTeam.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ShowTeam.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ShowTeam.Location = new System.Drawing.Point(17, 74);
             this.ShowTeam.Name = "ShowTeam";
@@ -133,6 +141,8 @@
             // ShowEnemy
             // 
             this.ShowEnemy.AutoSize = true;
+            this.ShowEnemy.Checked = true;
+            this.ShowEnemy.CheckState = System.Windows.Forms.CheckState.Checked;
             this.ShowEnemy.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.ShowEnemy.Location = new System.Drawing.Point(17, 52);
             this.ShowEnemy.Name = "ShowEnemy";

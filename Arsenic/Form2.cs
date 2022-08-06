@@ -24,10 +24,13 @@ namespace Arsenic
         Entity player = Form1.player;
         List<Entity> entitiesWH = Form1.entitiesWH;
 
+        public Panel whPanel;
+
         public Form2()
         {
             InitializeComponent();
             ez.SetInvi(this);
+            whPanel = this.panel1;
         }
 
         private void Form2_Load(object sender, EventArgs e)
@@ -45,7 +48,7 @@ namespace Arsenic
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
-
+            
             if (entitiesWH.Count > 0)
             {
                 try

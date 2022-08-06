@@ -221,6 +221,16 @@ namespace Arsenic
 
         }
         
+        float calcDist(Entity ent)
+        {
+
+            var xx = (f2.whPanel.Width / 2);
+            var xy = (f2.whPanel.Height / 2);
+
+            // WATCH VIDEO TO GET CORRECT EQUATION
+            return (float) Math.Abs(Math.Sqrt(Math.Pow(xx - ent.top.X, 2)));
+
+        }
 
         float calcMag(Entity e)
         {
