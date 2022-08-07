@@ -11,7 +11,7 @@ namespace Arsenic
     {
 
         public int health, team, lifestate;
-        public float x, y, z, magnitude;
+        public float x, y, z, magnitude, xdist;
         public Point  top, bottom;
         public Rectangle rect() // easier to access :)
         {

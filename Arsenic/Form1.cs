@@ -51,6 +51,10 @@ namespace Arsenic
         public const int LIFESTATE = 0x25F;
         public const int DORMANT = 0xED;
         public const int VIEWMATRIX = 0x4DCD214;
+        public const int BONEMATRIX = 0x26A8;
+        public const int VIEWOFFSET = 0x108;
+        public const int AIMPUNCHANGLE = 0x303C;
+        public const int SPOTTEDBYMASK = 0x980;
 
         #endregion
 
@@ -58,6 +62,7 @@ namespace Arsenic
         public List<Entity> entitiesAB = new List<Entity>();
         public static List<Entity> entitiesWH = new List<Entity>();
 
+        public static bool WHEnabledBool;
         public static bool ShowEnemyWH;
         public static bool ShowTeamWH;
         public static bool SnaplineEnabledBool;
@@ -65,6 +70,8 @@ namespace Arsenic
         public static bool TeamSnapLine;
 
         Form2 f2 = new Form2();
+
+        public static float pixdist = 100;
 
         public Form1()
         {
@@ -78,7 +85,7 @@ namespace Arsenic
 
             // Makes form topmost
             this.TopMost = true;
-            
+           
         }
 
         private void Form1_Load(object sender, EventArgs e)
@@ -100,26 +107,30 @@ namespace Arsenic
             ab.Start();
             wh.Start();
 
-            // Makes form 2 hidden at first
-            f2.Hide();
-
         }
 
         void doAimbot()
         {
+
             while (true)
             {
+
+                updateLocal();
+                updateEntitiesAB();
+
                 if (AimbotEnabled.Checked)
                 {
+
                     if(GetAsyncKeyState(aimbotKey) < 0)
                     {
 
-                        updateLocal();
-                        updateEntitiesAB();
+                        //entitiesAB = entitiesAB.OrderBy(o => o.magnitude).ToList();
+                        entitiesAB = entitiesAB.OrderBy(o => o.xdist).ToList();
 
-                        entitiesAB = entitiesAB.OrderBy(o => o.magnitude).ToList();
-
-                        Aim(entitiesAB[0]);
+                        if(entitiesAB.Count > 0)
+                        {
+                            Aim(entitiesAB[0]);
+                        }
 
                     }
                 }
@@ -198,8 +209,12 @@ namespace Arsenic
 
                 var buffer = m.ReadPointer(m.GetModuleBase("engine.dll"), CLIENTSTATE);
 
-                m.WriteBytes(buffer, VIEWANGLES, BitConverter.GetBytes(Y));
-                m.WriteBytes(buffer, VIEWANGLES + 0x4, BitConverter.GetBytes(X));
+                if(ent.xdist <= pixdist)
+                {
+                    m.WriteBytes(buffer, VIEWANGLES, BitConverter.GetBytes(Y));
+                    m.WriteBytes(buffer, VIEWANGLES + 0x4, BitConverter.GetBytes(X));
+                }
+                
             }
 
         }
@@ -226,9 +241,9 @@ namespace Arsenic
 
             var xx = (f2.whPanel.Width / 2);
             var xy = (f2.whPanel.Height / 2);
-
-            // WATCH VIDEO TO GET CORRECT EQUATION
-            return (float) Math.Abs(Math.Sqrt(Math.Pow(xx - ent.top.X, 2)));
+            
+            // IDK MAN
+            return (float) Math.Sqrt(Math.Pow(xx - ent.top.X, 2) + Math.Pow(xy - ent.top.Y, 2));
 
         }
 
@@ -256,7 +271,7 @@ namespace Arsenic
         {
             entitiesAB.Clear();
 
-            for(int i = 1; i < 64; i++)
+            for(int i = 1; i < 32; i++)
             {
 
                 var buffer = m.ReadPointer(m.GetModuleBase("client.dll"), ENTITYLIST + i * 0x10);
@@ -280,6 +295,11 @@ namespace Arsenic
                 ent.health = hp;
 
                 ent.magnitude = calcMag(ent);
+
+                ent.bottom = WorldToScreen(readMatrix(), ent.x, ent.y, ent.z - 15, f2.Width, f2.Height);
+                ent.top = WorldToScreen(readMatrix(), ent.x, ent.y, ent.z + 58, f2.Width, f2.Height);
+
+                ent.xdist = calcDist(ent);
 
                 entitiesAB.Add(ent);
 
@@ -424,14 +444,6 @@ namespace Arsenic
 
         #region WH UI
 
-        private void WHEnabled_CheckedChanged(object sender, EventArgs e)
-        {
-            if (WHEnabled.Checked)
-                f2.Show();
-            else
-                f2.Hide();
-        }
-
         private void ShowEnemy_CheckedChanged(object sender, EventArgs e)
         {
             if (ShowEnemy.Checked)
@@ -474,5 +486,12 @@ namespace Arsenic
 
         #endregion
 
+        private void WHEnabled_CheckedChanged_1(object sender, EventArgs e)
+        {
+            if (WHEnabled.Checked)
+                f2.Show();
+            else
+                f2.Hide();
+        }
     }
 }

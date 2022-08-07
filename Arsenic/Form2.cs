@@ -48,52 +48,56 @@ namespace Arsenic
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
             var g = e.Graphics;
+
+            //g.DrawEllipse(new Pen(Color.White, 1), (Width / 2) - 50, (Height / 2) - 38, 100, 100);
+            g.DrawEllipse(new Pen(Color.White, 1), (Width / 2) - Form1.pixdist, (Height / 2)
+                - (Form1.pixdist / 1.15f), Form1.pixdist * 2, Form1.pixdist * 2);
             
-            if (entitiesWH.Count > 0)
-            {
-                try
+                if (entitiesWH.Count > 0)
                 {
-                    foreach (var entity in entitiesWH)
+                    try
                     {
-                        if (entity.team == player.team)
+                        foreach (var entity in entitiesWH)
                         {
-
-                            if (Form1.ShowTeamWH)
+                            if (entity.team == player.team)
                             {
-                                g.DrawRectangle(teamPen, entity.rect());
 
-                                if (Form1.SnaplineEnabledBool && Form1.TeamSnapLine)
+                                if (Form1.ShowTeamWH)
                                 {
-                                    if (entity.bottom.X <= -99 || entity.bottom.Y <= -99)
-                                        continue;
+                                    g.DrawRectangle(teamPen, entity.rect());
 
-                                    g.DrawLine(teamPen, Width / 2, Height, entity.bottom.X, entity.bottom.Y);
+                                    if (Form1.SnaplineEnabledBool && Form1.TeamSnapLine)
+                                    {
+                                        if (entity.bottom.X <= -99 || entity.bottom.Y <= -99)
+                                            continue;
+                                        g.DrawLine(teamPen, Width / 2, Height, entity.bottom.X, entity.bottom.Y);
+                                    }
+                                }
+
+                            }
+                            else if (entity.team != player.team && entity.team > 1)
+                            {
+
+                                if (Form1.ShowEnemyWH)
+                                {
+                                    g.DrawRectangle(enemyPen, entity.rect());
+
+                                    if (Form1.SnaplineEnabledBool && Form1.EnemySnapline)
+                                    {
+                                        if (entity.bottom.X <= -99 || entity.bottom.Y <= -99)
+                                            continue;
+                                        g.DrawLine(enemyPen, Width / 2, Height, entity.bottom.X, entity.bottom.Y);
+                                    }
                                 }
                             }
 
-                        }
-                        else if (entity.team != player.team && entity.team > 1)
-                        {
-
-                            if (Form1.ShowEnemyWH)
-                            {
-                                g.DrawRectangle(enemyPen, entity.rect());
-
-                                if (Form1.SnaplineEnabledBool && Form1.EnemySnapline)
-                                {
-                                    if (entity.bottom.X <= -99 || entity.bottom.Y <= -99)
-                                        continue;
-                                    g.DrawLine(enemyPen, Width / 2, Height, entity.bottom.X, entity.bottom.Y);
-                                }
-                            }
                         }
 
                     }
-
+                    catch { }
                 }
-                catch { }
-            }
+            
+
         }
-        
     }
 }
