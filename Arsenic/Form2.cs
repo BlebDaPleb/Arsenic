@@ -38,8 +38,6 @@ namespace Arsenic
             ez.DoStuff("Counter-Strike: Global Offensive - Direct3D 9", this);
         }
 
-
-
         public void refreshPanel()
         {
             panel1.Refresh();

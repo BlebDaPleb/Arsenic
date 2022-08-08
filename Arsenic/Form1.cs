@@ -10,6 +10,7 @@ using System.Windows.Forms;
 using System.Threading;
 using System.Runtime.InteropServices;
 using swed32;
+using System.Numerics;
 
 namespace Arsenic
 {
@@ -237,7 +238,30 @@ namespace Arsenic
             }
 
         }
-        
+
+        // REMEMBER TO WATCH CAZZ VIDEO TO FINISH THIS
+
+        Vector3 ToAngle(Vector3 vec3)
+        {
+            return new Vector3 
+            {
+                X = (float)(Math.Atan2(-vec3.Z, Math.Sqrt(Math.Pow(vec3.X, 2)
+                + Math.Pow(vec3.Y, 2))) * 180 / Math.PI),
+
+                Y = (float)(Math.Atan2(vec3.Y, vec3.X) * (180f / Math.PI)),
+
+                Z = 0f
+            };
+        }
+
+        Vector3 CalcAngle(
+            Vector3 localPosition,
+            Vector3 enemyPosition,
+            Vector3 viewAngles)
+        {
+            return (ToAngle(enemyPosition - localPosition) - viewAngles);
+        }
+
         float calcDist(Entity ent)
         {
 
@@ -289,10 +313,8 @@ namespace Arsenic
                 if (WallAimCheck.Checked)
                 {
                     sptd = 1;
-                    //sptd = BitConverter.ToInt32(m.ReadBytes(buffer, SPOTTEDBYMASK, 4), 0);
                 } else
                     sptd = BitConverter.ToInt32(m.ReadBytes(buffer, SPOTTEDBYMASK, 4), 0);
-                    //sptd = 1;
 
                 // CHECKS
                 if (ls != 0 || dorm != 0 || tm == player.team || sptd == 0)
