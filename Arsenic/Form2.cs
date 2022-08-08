@@ -49,10 +49,13 @@ namespace Arsenic
         {
             var g = e.Graphics;
 
-            //g.DrawEllipse(new Pen(Color.White, 1), (Width / 2) - 50, (Height / 2) - 38, 100, 100);
-            g.DrawEllipse(new Pen(Color.White, 1), (Width / 2) - Form1.pixdist, (Height / 2)
-                - (Form1.pixdist / 1.15f), Form1.pixdist * 2, Form1.pixdist * 2);
-            
+            if (Form1.ShowFovCircle)
+            {
+                //g.DrawEllipse(new Pen(Color.White, 1), (Width / 2) - 50, (Height / 2) - 38, 100, 100);
+                g.DrawEllipse(new Pen(Color.White, 1), (Width / 2) - Form1.pixdist, (Height / 2)
+                    - (Form1.pixdist / 1.12f), Form1.pixdist * 2, Form1.pixdist * 2);
+            }
+
                 if (entitiesWH.Count > 0)
                 {
                     try
@@ -96,8 +99,6 @@ namespace Arsenic
                     }
                     catch { }
                 }
-            
-
         }
     }
 }

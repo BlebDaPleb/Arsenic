@@ -70,8 +70,9 @@ namespace Arsenic
         public static bool SnaplineEnabledBool;
         public static bool EnemySnapline;
         public static bool TeamSnapLine;
+        public static bool ShowFovCircle;
 
-        public static float pixdist = 100;
+        public static float pixdist = 200;
 
         Form2 f2 = new Form2();
 
@@ -201,7 +202,7 @@ namespace Arsenic
 
                 // Y
 
-                float deltaZ = ent.headBoneZ - player.z - 60; // -75 BODY, -60 HEAD
+                float deltaZ = ent.headBoneZ - player.z - 65; // -75 BODY, -65 HEAD
                 double dist = Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
 
                 float Y = -(float)(Math.Atan2(deltaZ, dist) * 180 / Math.PI);
@@ -282,9 +283,18 @@ namespace Arsenic
                 var ls = BitConverter.ToInt32(m.ReadBytes(buffer, LIFESTATE, 4), 0);                
                 var hp = BitConverter.ToInt32(m.ReadBytes(buffer, HEALTH, 4), 0);
 
-                if()
-                var sptd = BitConverter.ToInt32(m.ReadBytes(buffer, SPOTTEDBYMASK, 4), 0);
+                int sptd;
 
+                // IF AIM THROUGH WALLS
+                if (WallAimCheck.Checked)
+                {
+                    sptd = 1;
+                    //sptd = BitConverter.ToInt32(m.ReadBytes(buffer, SPOTTEDBYMASK, 4), 0);
+                } else
+                    sptd = BitConverter.ToInt32(m.ReadBytes(buffer, SPOTTEDBYMASK, 4), 0);
+                    //sptd = 1;
+
+                // CHECKS
                 if (ls != 0 || dorm != 0 || tm == player.team || sptd == 0)
                     continue;
 
@@ -462,7 +472,7 @@ namespace Arsenic
             Application.Exit();
         }
 
-        #region WH UI
+        #region F2 VISUALS
 
         private void ShowEnemy_CheckedChanged(object sender, EventArgs e)
         {
@@ -504,6 +514,15 @@ namespace Arsenic
                 TeamSnapLine = false;
         }
 
+        private void ShowFov_CheckedChanged(object sender, EventArgs e)
+        {
+            if (ShowFov.Checked)
+                ShowFovCircle = true;
+            else
+                ShowFovCircle = false;
+            
+        }
+
         #endregion
 
         private void WHEnabled_CheckedChanged_1(object sender, EventArgs e)
@@ -513,5 +532,6 @@ namespace Arsenic
             else
                 f2.Hide();
         }
+
     }
 }

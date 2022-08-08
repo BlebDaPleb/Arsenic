@@ -37,13 +37,14 @@
             this.ShowEnemy = new System.Windows.Forms.CheckBox();
             this.WHEnabled = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.checkBox3 = new System.Windows.Forms.CheckBox();
+            this.WallAimCheck = new System.Windows.Forms.CheckBox();
             this.AimbotEnabled = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.checkBox2 = new System.Windows.Forms.CheckBox();
             this.TriggerbotEnabled = new System.Windows.Forms.CheckBox();
             this.Panel_Name = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
+            this.ShowFov = new System.Windows.Forms.CheckBox();
             this.Panel_Main.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -156,7 +157,8 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.checkBox3);
+            this.groupBox2.Controls.Add(this.ShowFov);
+            this.groupBox2.Controls.Add(this.WallAimCheck);
             this.groupBox2.Controls.Add(this.AimbotEnabled);
             this.groupBox2.Font = new System.Drawing.Font("Comfortaa", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox2.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(132)))), ((int)(((byte)(252)))));
@@ -168,16 +170,16 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Aimbot";
             // 
-            // checkBox3
+            // WallAimCheck
             // 
-            this.checkBox3.AutoSize = true;
-            this.checkBox3.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox3.Location = new System.Drawing.Point(17, 52);
-            this.checkBox3.Name = "checkBox3";
-            this.checkBox3.Size = new System.Drawing.Size(49, 25);
-            this.checkBox3.TabIndex = 1;
-            this.checkBox3.Text = "Idk";
-            this.checkBox3.UseVisualStyleBackColor = true;
+            this.WallAimCheck.AutoSize = true;
+            this.WallAimCheck.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.WallAimCheck.Location = new System.Drawing.Point(17, 52);
+            this.WallAimCheck.Name = "WallAimCheck";
+            this.WallAimCheck.Size = new System.Drawing.Size(156, 25);
+            this.WallAimCheck.TabIndex = 1;
+            this.WallAimCheck.Text = "Aim Through Walls";
+            this.WallAimCheck.UseVisualStyleBackColor = true;
             // 
             // AimbotEnabled
             // 
@@ -252,6 +254,18 @@
             this.label1.Text = "ArseNic";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // ShowFov
+            // 
+            this.ShowFov.AutoSize = true;
+            this.ShowFov.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShowFov.Location = new System.Drawing.Point(17, 74);
+            this.ShowFov.Name = "ShowFov";
+            this.ShowFov.Size = new System.Drawing.Size(142, 25);
+            this.ShowFov.TabIndex = 2;
+            this.ShowFov.Text = "Show FOV Circle";
+            this.ShowFov.UseVisualStyleBackColor = true;
+            this.ShowFov.CheckedChanged += new System.EventHandler(this.ShowFov_CheckedChanged);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -283,7 +297,7 @@
         private System.Windows.Forms.CheckBox checkBox2;
         private System.Windows.Forms.CheckBox TriggerbotEnabled;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.CheckBox checkBox3;
+        private System.Windows.Forms.CheckBox WallAimCheck;
         private System.Windows.Forms.CheckBox AimbotEnabled;
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.CheckBox ShowEnemy;
@@ -292,6 +306,7 @@
         private System.Windows.Forms.CheckBox ShowTeam;
         private System.Windows.Forms.CheckBox ShowTeamSnapline;
         private System.Windows.Forms.CheckBox ShowEnemySnap;
+        private System.Windows.Forms.CheckBox ShowFov;
     }
 }
 
