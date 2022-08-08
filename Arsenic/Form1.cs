@@ -62,6 +62,8 @@ namespace Arsenic
         public List<Entity> entitiesAB = new List<Entity>();
         public static List<Entity> entitiesWH = new List<Entity>();
 
+        // MENU CONTROL
+
         public static bool WHEnabledBool;
         public static bool ShowEnemyWH;
         public static bool ShowTeamWH;
@@ -69,9 +71,9 @@ namespace Arsenic
         public static bool EnemySnapline;
         public static bool TeamSnapLine;
 
-        Form2 f2 = new Form2();
-
         public static float pixdist = 100;
+
+        Form2 f2 = new Form2();
 
         public Form1()
         {
@@ -188,19 +190,18 @@ namespace Arsenic
 
         void Aim(Entity ent)
         {
-
             if (ent.team > 1)
             {
                 // X
 
-                float deltaX = (ent.x) - player.x;
-                float deltaY = ent.y - player.y;
+                float deltaX = ent.headBoneX - player.x;
+                float deltaY = ent.headBoneY - player.y;
 
                 float X = (float)(Math.Atan2(deltaY, deltaX) * 180 / Math.PI);
 
                 // Y
 
-                float deltaZ = ent.z - player.z;
+                float deltaZ = ent.headBoneZ - player.z - 60; // -75 BODY, -60 HEAD
                 double dist = Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
 
                 float Y = -(float)(Math.Atan2(deltaZ, dist) * 180 / Math.PI);
@@ -209,7 +210,7 @@ namespace Arsenic
 
                 var buffer = m.ReadPointer(m.GetModuleBase("engine.dll"), CLIENTSTATE);
 
-                if(ent.xdist <= pixdist)
+                if(ent.xdist <= pixdist || ent.xdist <= pixdist + 10)
                 {
                     m.WriteBytes(buffer, VIEWANGLES, BitConverter.GetBytes(Y));
                     m.WriteBytes(buffer, VIEWANGLES + 0x4, BitConverter.GetBytes(X));
@@ -264,6 +265,7 @@ namespace Arsenic
             player.z = BitConverter.ToSingle(coords, 8);
 
             player.team = BitConverter.ToInt32(m.ReadBytes(buffer, TEAM, 4), 0);
+            player.headBoneZ += BitConverter.ToSingle(m.ReadBytes(buffer, VIEWOFFSET + 0x8, 4), 0);
 
         }
 
@@ -280,7 +282,10 @@ namespace Arsenic
                 var ls = BitConverter.ToInt32(m.ReadBytes(buffer, LIFESTATE, 4), 0);                
                 var hp = BitConverter.ToInt32(m.ReadBytes(buffer, HEALTH, 4), 0);
 
-                if (ls != 0 || dorm != 0 || tm == player.team)
+                if()
+                var sptd = BitConverter.ToInt32(m.ReadBytes(buffer, SPOTTEDBYMASK, 4), 0);
+
+                if (ls != 0 || dorm != 0 || tm == player.team || sptd == 0)
                     continue;
 
                 var coords = m.ReadBytes(buffer, XYZ, 12);
@@ -293,11 +298,19 @@ namespace Arsenic
                 ent.team = tm;
                 ent.lifestate = ls;
                 ent.health = hp;
+                ent.spotted = sptd;
 
                 ent.magnitude = calcMag(ent);
 
+                var bones = m.ReadPointer(buffer, BONEMATRIX);
+                var headBone = m.ReadBytes(bones, 0x30 * 8, 0x30);
+
+                ent.headBoneX = BitConverter.ToSingle(headBone, 0xC);
+                ent.headBoneY = BitConverter.ToSingle(headBone, 0x1C);
+                ent.headBoneZ = BitConverter.ToSingle(headBone, 0x2C);
+
                 ent.bottom = WorldToScreen(readMatrix(), ent.x, ent.y, ent.z - 15, f2.Width, f2.Height);
-                ent.top = WorldToScreen(readMatrix(), ent.x, ent.y, ent.z + 58, f2.Width, f2.Height);
+                ent.top = WorldToScreen(readMatrix(), ent.headBoneX, ent.headBoneY, ent.headBoneZ, f2.Width, f2.Height);
 
                 ent.xdist = calcDist(ent);
 
@@ -325,6 +338,13 @@ namespace Arsenic
 
                 Entity ent = new Entity();
 
+                var bones = m.ReadPointer(buffer, BONEMATRIX);
+                var headBone = m.ReadBytes(bones, 0x30 * 8, 0x30);
+
+                var headBoneX = BitConverter.ToSingle(headBone, 0xC);
+                var headBoneY = BitConverter.ToSingle(headBone, 0x1C);
+                var headBoneZ = BitConverter.ToSingle(headBone, 0x2C);
+
                 ent.x = BitConverter.ToSingle(coords, 0);
                 ent.y = BitConverter.ToSingle(coords, 4);
                 ent.z = BitConverter.ToSingle(coords, 8);
@@ -334,8 +354,8 @@ namespace Arsenic
 
                 ent.magnitude = calcMag(ent);
 
-                ent.bottom = WorldToScreen(readMatrix(), ent.x, ent.y, ent.z - 15, f2.Width, f2.Height);
-                ent.top = WorldToScreen(readMatrix(), ent.x, ent.y, ent.z + 58, f2.Width, f2.Height);
+                ent.bottom = WorldToScreen(readMatrix(), ent.x, ent.y, ent.z - 15f, f2.Width, f2.Height);
+                ent.top = WorldToScreen(readMatrix(), headBoneX, headBoneY, headBoneZ, f2.Width, f2.Height);
 
                 entitiesWH.Add(ent);
 

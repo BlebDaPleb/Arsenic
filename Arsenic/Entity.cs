@@ -10,8 +10,8 @@ namespace Arsenic
     public class Entity
     {
 
-        public int health, team, lifestate;
-        public float x, y, z, magnitude, xdist;
+        public int health, team, lifestate, spotted;
+        public float x, y, z, magnitude, xdist, headBoneX, headBoneY, headBoneZ;
         public Point  top, bottom;
         public Rectangle rect() // easier to access :)
         {
