@@ -29,6 +29,8 @@
         private void InitializeComponent()
         {
             this.Panel_Main = new System.Windows.Forms.Panel();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.BHopCheck = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.ShowTeamSnapline = new System.Windows.Forms.CheckBox();
             this.ShowEnemySnap = new System.Windows.Forms.CheckBox();
@@ -47,15 +49,13 @@
             this.TriggerbotEnabled = new System.Windows.Forms.CheckBox();
             this.Panel_Name = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.groupBox4 = new System.Windows.Forms.GroupBox();
-            this.BHopCheck = new System.Windows.Forms.CheckBox();
             this.Panel_Main.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.FovAmountUD)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.Panel_Name.SuspendLayout();
-            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // Panel_Main
@@ -71,6 +71,30 @@
             this.Panel_Main.Name = "Panel_Main";
             this.Panel_Main.Size = new System.Drawing.Size(541, 299);
             this.Panel_Main.TabIndex = 0;
+            // 
+            // groupBox4
+            // 
+            this.groupBox4.Controls.Add(this.BHopCheck);
+            this.groupBox4.Font = new System.Drawing.Font("Comfortaa", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(132)))), ((int)(((byte)(252)))));
+            this.groupBox4.Location = new System.Drawing.Point(3, 206);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.groupBox4.Size = new System.Drawing.Size(129, 90);
+            this.groupBox4.TabIndex = 2;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "BHop";
+            // 
+            // BHopCheck
+            // 
+            this.BHopCheck.AutoSize = true;
+            this.BHopCheck.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BHopCheck.Location = new System.Drawing.Point(17, 30);
+            this.BHopCheck.Name = "BHopCheck";
+            this.BHopCheck.Size = new System.Drawing.Size(86, 25);
+            this.BHopCheck.TabIndex = 0;
+            this.BHopCheck.Text = "Enabled";
+            this.BHopCheck.UseVisualStyleBackColor = true;
             // 
             // groupBox3
             // 
@@ -312,36 +336,14 @@
             this.label1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
             this.label1.Font = new System.Drawing.Font("Toxico", 27.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(132)))), ((int)(((byte)(252)))));
-            this.label1.Location = new System.Drawing.Point(101, 19);
+            this.label1.Location = new System.Drawing.Point(3, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(336, 36);
+            this.label1.Size = new System.Drawing.Size(535, 72);
             this.label1.TabIndex = 0;
             this.label1.Text = "ArseNic";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // groupBox4
-            // 
-            this.groupBox4.Controls.Add(this.BHopCheck);
-            this.groupBox4.Font = new System.Drawing.Font("Comfortaa", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.groupBox4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(132)))), ((int)(((byte)(252)))));
-            this.groupBox4.Location = new System.Drawing.Point(3, 206);
-            this.groupBox4.Name = "groupBox4";
-            this.groupBox4.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.groupBox4.Size = new System.Drawing.Size(129, 90);
-            this.groupBox4.TabIndex = 2;
-            this.groupBox4.TabStop = false;
-            this.groupBox4.Text = "BHop";
-            // 
-            // BHopCheck
-            // 
-            this.BHopCheck.AutoSize = true;
-            this.BHopCheck.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.BHopCheck.Location = new System.Drawing.Point(17, 30);
-            this.BHopCheck.Name = "BHopCheck";
-            this.BHopCheck.Size = new System.Drawing.Size(86, 25);
-            this.BHopCheck.TabIndex = 0;
-            this.BHopCheck.Text = "Enabled";
-            this.BHopCheck.UseVisualStyleBackColor = true;
+            this.label1.MouseDown += new System.Windows.Forms.MouseEventHandler(this.label1_MouseDown);
+            this.label1.MouseMove += new System.Windows.Forms.MouseEventHandler(this.label1_MouseMove);
             // 
             // Form1
             // 
@@ -354,6 +356,8 @@
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Panel_Main.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
@@ -362,8 +366,6 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.Panel_Name.ResumeLayout(false);
-            this.groupBox4.ResumeLayout(false);
-            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
