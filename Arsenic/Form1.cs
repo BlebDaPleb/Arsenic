@@ -37,7 +37,7 @@ namespace Arsenic
 
         // CLIENT
         public const int LOCALPLAYER = 0xDBF4BC;
-        public const int ENTITYLIST = 0x4DDB8FC;
+        public const int ENTITYLIST = 0x4DDB91C;
 
         // ENGINE
         public const int CLIENTSTATE = 0x58CFDC;
@@ -47,15 +47,18 @@ namespace Arsenic
         public const int HEALTH = 0x100;
         public const int TEAM = 0xF4;
         public const int XYZ = 0x138;
-        public const int FORCEATTACK = 0x320BDC8;
+        public const int FORCEATTACK = 0x320BDE8;
         public const int CROSSHAIRID = 0x11838;
         public const int LIFESTATE = 0x25F;
         public const int DORMANT = 0xED;
-        public const int VIEWMATRIX = 0x4DCD214;
+        public const int VIEWMATRIX = 0x4DCD234;
         public const int BONEMATRIX = 0x26A8;
         public const int VIEWOFFSET = 0x108;
         public const int AIMPUNCHANGLE = 0x303C;
         public const int SPOTTEDBYMASK = 0x980;
+        public const int ISLOCAL = 0x3628;
+        public const int FORCEJUMP = 0x52858FC;
+        public const int FFLAGS = 0x104;
 
         #endregion
 
@@ -73,7 +76,7 @@ namespace Arsenic
         public static bool TeamSnapLine;
         public static bool ShowFovCircle;
 
-        public static float pixdist = 200;
+        public static float pixdist = 50;
 
         Form2 f2 = new Form2();
 
@@ -102,6 +105,7 @@ namespace Arsenic
             Thread tb = new Thread(doTriggerbot) { IsBackground = true };
             Thread ab = new Thread(doAimbot) { IsBackground = true };
             Thread wh = new Thread(doESP) { IsBackground = true };
+            Thread bh = new Thread(doBhop) { IsBackground = true };
 
             m.GetProcess(processName);
             
@@ -110,6 +114,7 @@ namespace Arsenic
             tb.Start();
             ab.Start();
             wh.Start();
+            bh.Start();
 
         }
 
@@ -162,25 +167,29 @@ namespace Arsenic
 
                         var targetTeam = BitConverter.ToInt32(m.ReadBytes(target, TEAM, 4), 0);
                         var targetLifestate = BitConverter.ToInt32(m.ReadBytes(target, LIFESTATE, 4), 0);
-                        
-                        if (myTeam != targetTeam && targetTeam > 1 && targetLifestate == 0)
+
+                        if (!SprayCheck.Checked)
                         {
-                            m.WriteBytes(m.GetModuleBase("client.dll"), FORCEATTACK, BitConverter.GetBytes(5));
-                            Thread.Sleep(1);
-                            m.WriteBytes(m.GetModuleBase("client.dll"), FORCEATTACK, BitConverter.GetBytes(4));
-                        }
-                                                /*
-                         * If Burst/Spray is enabled
-                        if (myTeam != targetTeam && targetTeam > 1 && targetLifestate == 0 
-                            && target.ToInt32() > 346438400)
-                        {
-                            m.WriteBytes(m.GetModuleBase("client.dll"), FORCEATTACK, BitConverter.GetBytes(5));
-                            Thread.Sleep(1);
+                            if (myTeam != targetTeam && targetTeam > 1 && targetLifestate == 0)
+                            {
+                                m.WriteBytes(m.GetModuleBase("client.dll"), FORCEATTACK, BitConverter.GetBytes(5));
+                                Thread.Sleep(1);
+                                m.WriteBytes(m.GetModuleBase("client.dll"), FORCEATTACK, BitConverter.GetBytes(4));
+                            }
                         } else
                         {
-                            m.WriteBytes(m.GetModuleBase("client.dll"), FORCEATTACK, BitConverter.GetBytes(4));
+                            if (myTeam != targetTeam && targetTeam > 1 && targetLifestate == 0
+                                && target.ToInt32() > 346438400)
+                            {
+                                m.WriteBytes(m.GetModuleBase("client.dll"), FORCEATTACK, BitConverter.GetBytes(5));
+                                Thread.Sleep(1);
+                            }
+                            else
+                            {
+                                m.WriteBytes(m.GetModuleBase("client.dll"), FORCEATTACK, BitConverter.GetBytes(4));
+                            }
                         }
-                        */
+                        
                         
                     }
                 }
@@ -203,7 +212,13 @@ namespace Arsenic
 
                 // Y
 
-                float deltaZ = ent.headBoneZ - player.z - 65; // -75 BODY, -65 HEAD
+                float deltaZ = ent.headBoneZ - player.z - 65;
+
+                if (BodyShotCheck.Checked)
+                {
+                    deltaZ = ent.headBoneZ - player.z - 75;
+                }
+
                 double dist = Math.Sqrt(Math.Pow(deltaX, 2) + Math.Pow(deltaY, 2));
 
                 float Y = -(float)(Math.Atan2(deltaZ, dist) * 180 / Math.PI);
@@ -212,7 +227,13 @@ namespace Arsenic
 
                 var buffer = m.ReadPointer(m.GetModuleBase("engine.dll"), CLIENTSTATE);
 
-                if(ent.xdist <= pixdist || ent.xdist <= pixdist + 10)
+                var localP = m.ReadPointer(m.GetModuleBase("client.dll"), LOCALPLAYER);
+                var cross = BitConverter.ToInt32(m.ReadBytes(localP, CROSSHAIRID, 4), 0);
+
+                var target = m.ReadPointer(m.GetModuleBase("client.dll"), ENTITYLIST
+                + (cross - 1) * 0x10);
+
+                if (ent.xdist <= pixdist || ent.xdist <= pixdist + 10 || target.ToInt32() > 346438400)
                 {
                     m.WriteBytes(buffer, VIEWANGLES, BitConverter.GetBytes(Y));
                     m.WriteBytes(buffer, VIEWANGLES + 0x4, BitConverter.GetBytes(X));
@@ -239,27 +260,32 @@ namespace Arsenic
 
         }
 
-        // REMEMBER TO WATCH CAZZ VIDEO TO FINISH THIS
-
-        Vector3 ToAngle(Vector3 vec3)
+        void doBhop()
         {
-            return new Vector3 
+            while (true)
             {
-                X = (float)(Math.Atan2(-vec3.Z, Math.Sqrt(Math.Pow(vec3.X, 2)
-                + Math.Pow(vec3.Y, 2))) * 180 / Math.PI),
+                if (BHopCheck.Checked)
+                {
+                    if (GetAsyncKeyState(Keys.Space) < 0)
+                    {
 
-                Y = (float)(Math.Atan2(vec3.Y, vec3.X) * (180f / Math.PI)),
+                        var buffer = m.ReadPointer(m.GetModuleBase("client.dll"), LOCALPLAYER);
+                        var flag = BitConverter.ToInt32(m.ReadBytes(buffer, FFLAGS, 4), 0);
 
-                Z = 0f
-            };
-        }
+                        if(flag == 263 || flag != 263)
+                        {
+                            if(flag == 257)
+                                m.WriteBytes(m.GetModuleBase("client.dll"), FORCEJUMP, BitConverter.GetBytes(5));
+                            else
+                                m.WriteBytes(m.GetModuleBase("client.dll"), FORCEJUMP, BitConverter.GetBytes(4));
+                        }
 
-        Vector3 CalcAngle(
-            Vector3 localPosition,
-            Vector3 enemyPosition,
-            Vector3 viewAngles)
-        {
-            return (ToAngle(enemyPosition - localPosition) - viewAngles);
+                    }
+                }
+
+                Thread.Sleep(1);
+
+            }
         }
 
         float calcDist(Entity ent)
@@ -298,7 +324,7 @@ namespace Arsenic
         {
             entitiesAB.Clear();
 
-            for(int i = 1; i < 32; i++)
+            for(int i = 0; i < 32; i++)
             {
 
                 var buffer = m.ReadPointer(m.GetModuleBase("client.dll"), ENTITYLIST + i * 0x10);
@@ -313,6 +339,7 @@ namespace Arsenic
                 if (WallAimCheck.Checked)
                 {
                     sptd = 1;
+
                 } else
                     sptd = BitConverter.ToInt32(m.ReadBytes(buffer, SPOTTEDBYMASK, 4), 0);
 
@@ -361,7 +388,9 @@ namespace Arsenic
                 var buffer = m.ReadPointer(m.GetModuleBase("client.dll"), ENTITYLIST + i * 0x10);
                 var tm = BitConverter.ToInt32(m.ReadBytes(buffer, TEAM, 4), 0);
                 var dorm = BitConverter.ToInt32(m.ReadBytes(buffer, DORMANT, 4), 0);
-                var ls = BitConverter.ToInt32(m.ReadBytes(buffer, LIFESTATE, 4), 0); var hp = BitConverter.ToInt32(m.ReadBytes(buffer, HEALTH, 4), 0);
+                var ls = BitConverter.ToInt32(m.ReadBytes(buffer, LIFESTATE, 4), 0); 
+                var hp = BitConverter.ToInt32(m.ReadBytes(buffer, HEALTH, 4), 0);
+                var isLocal = BitConverter.ToInt32(m.ReadBytes(buffer, ISLOCAL, 4), 0);
 
                 if (ls != 0 || dorm != 0)
                     continue;
@@ -555,5 +584,10 @@ namespace Arsenic
                 f2.Hide();
         }
 
+        private void FovAmountUD_ValueChanged(object sender, EventArgs e)
+        {
+            int newValue = (int) FovAmountUD.Value;
+            pixdist = newValue;
+        }
     }
 }

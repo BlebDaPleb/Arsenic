@@ -102,7 +102,6 @@ namespace ezOverLay
             form.Size = CalcSize();
             form.Left = rect.left;
             form.Top = rect.top;
-
         }
 
         public void PauseLoop()

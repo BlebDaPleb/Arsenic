@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using ezOverLay;
 using swed32;
+using System.Threading;
 
 namespace Arsenic
 {
@@ -35,10 +36,10 @@ namespace Arsenic
 
         private void Form2_Load(object sender, EventArgs e)
         {
-            ez.DoStuff("Counter-Strike: Global Offensive - Direct3D 9", this);
+            ez.StartLoop(1000, "Counter-Strike: Global Offensive - Direct3D 9", this);
         }
 
-        public void refreshPanel()
+        public void efreshPanel()
         {
             panel1.Refresh();
         }
@@ -51,7 +52,7 @@ namespace Arsenic
             {
                 //g.DrawEllipse(new Pen(Color.White, 1), (Width / 2) - 50, (Height / 2) - 38, 100, 100);
                 g.DrawEllipse(new Pen(Color.White, 1), (Width / 2) - Form1.pixdist, (Height / 2)
-                    - (Form1.pixdist / 1.12f), Form1.pixdist * 2, Form1.pixdist * 2);
+                    - (Form1.pixdist / 1.23f), Form1.pixdist * 2, Form1.pixdist * 2);
             }
 
                 if (entitiesWH.Count > 0)

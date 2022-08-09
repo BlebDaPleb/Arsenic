@@ -37,24 +37,31 @@
             this.ShowEnemy = new System.Windows.Forms.CheckBox();
             this.WHEnabled = new System.Windows.Forms.CheckBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.BodyShotCheck = new System.Windows.Forms.CheckBox();
+            this.FovAmountUD = new System.Windows.Forms.NumericUpDown();
+            this.ShowFov = new System.Windows.Forms.CheckBox();
             this.WallAimCheck = new System.Windows.Forms.CheckBox();
             this.AimbotEnabled = new System.Windows.Forms.CheckBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.checkBox2 = new System.Windows.Forms.CheckBox();
+            this.SprayCheck = new System.Windows.Forms.CheckBox();
             this.TriggerbotEnabled = new System.Windows.Forms.CheckBox();
             this.Panel_Name = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.ShowFov = new System.Windows.Forms.CheckBox();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.BHopCheck = new System.Windows.Forms.CheckBox();
             this.Panel_Main.SuspendLayout();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FovAmountUD)).BeginInit();
             this.groupBox1.SuspendLayout();
             this.Panel_Name.SuspendLayout();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // Panel_Main
             // 
             this.Panel_Main.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(24)))), ((int)(((byte)(24)))), ((int)(((byte)(24)))));
+            this.Panel_Main.Controls.Add(this.groupBox4);
             this.Panel_Main.Controls.Add(this.groupBox3);
             this.Panel_Main.Controls.Add(this.groupBox2);
             this.Panel_Main.Controls.Add(this.groupBox1);
@@ -157,6 +164,8 @@
             // 
             // groupBox2
             // 
+            this.groupBox2.Controls.Add(this.BodyShotCheck);
+            this.groupBox2.Controls.Add(this.FovAmountUD);
             this.groupBox2.Controls.Add(this.ShowFov);
             this.groupBox2.Controls.Add(this.WallAimCheck);
             this.groupBox2.Controls.Add(this.AimbotEnabled);
@@ -169,6 +178,62 @@
             this.groupBox2.TabIndex = 2;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Aimbot";
+            // 
+            // BodyShotCheck
+            // 
+            this.BodyShotCheck.AutoSize = true;
+            this.BodyShotCheck.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BodyShotCheck.Location = new System.Drawing.Point(17, 97);
+            this.BodyShotCheck.Name = "BodyShotCheck";
+            this.BodyShotCheck.Size = new System.Drawing.Size(99, 25);
+            this.BodyShotCheck.TabIndex = 4;
+            this.BodyShotCheck.Text = "Body Shot";
+            this.BodyShotCheck.UseVisualStyleBackColor = true;
+            // 
+            // FovAmountUD
+            // 
+            this.FovAmountUD.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(50)))), ((int)(((byte)(50)))), ((int)(((byte)(50)))));
+            this.FovAmountUD.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.FovAmountUD.Font = new System.Drawing.Font("Comfortaa", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.FovAmountUD.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(132)))), ((int)(((byte)(252)))));
+            this.FovAmountUD.Increment = new decimal(new int[] {
+            5,
+            0,
+            0,
+            0});
+            this.FovAmountUD.Location = new System.Drawing.Point(17, 129);
+            this.FovAmountUD.Maximum = new decimal(new int[] {
+            150,
+            0,
+            0,
+            0});
+            this.FovAmountUD.Minimum = new decimal(new int[] {
+            25,
+            0,
+            0,
+            0});
+            this.FovAmountUD.Name = "FovAmountUD";
+            this.FovAmountUD.ReadOnly = true;
+            this.FovAmountUD.Size = new System.Drawing.Size(142, 25);
+            this.FovAmountUD.TabIndex = 3;
+            this.FovAmountUD.Value = new decimal(new int[] {
+            50,
+            0,
+            0,
+            0});
+            this.FovAmountUD.ValueChanged += new System.EventHandler(this.FovAmountUD_ValueChanged);
+            // 
+            // ShowFov
+            // 
+            this.ShowFov.AutoSize = true;
+            this.ShowFov.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ShowFov.Location = new System.Drawing.Point(17, 74);
+            this.ShowFov.Name = "ShowFov";
+            this.ShowFov.Size = new System.Drawing.Size(142, 25);
+            this.ShowFov.TabIndex = 2;
+            this.ShowFov.Text = "Show FOV Circle";
+            this.ShowFov.UseVisualStyleBackColor = true;
+            this.ShowFov.CheckedChanged += new System.EventHandler(this.ShowFov_CheckedChanged);
             // 
             // WallAimCheck
             // 
@@ -194,28 +259,28 @@
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.checkBox2);
+            this.groupBox1.Controls.Add(this.SprayCheck);
             this.groupBox1.Controls.Add(this.TriggerbotEnabled);
             this.groupBox1.Font = new System.Drawing.Font("Comfortaa", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.groupBox1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(132)))), ((int)(((byte)(252)))));
             this.groupBox1.Location = new System.Drawing.Point(3, 78);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.RightToLeft = System.Windows.Forms.RightToLeft.No;
-            this.groupBox1.Size = new System.Drawing.Size(129, 218);
+            this.groupBox1.Size = new System.Drawing.Size(129, 122);
             this.groupBox1.TabIndex = 1;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Triggerbot";
             // 
-            // checkBox2
+            // SprayCheck
             // 
-            this.checkBox2.AutoSize = true;
-            this.checkBox2.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.checkBox2.Location = new System.Drawing.Point(17, 52);
-            this.checkBox2.Name = "checkBox2";
-            this.checkBox2.Size = new System.Drawing.Size(49, 25);
-            this.checkBox2.TabIndex = 1;
-            this.checkBox2.Text = "Idk";
-            this.checkBox2.UseVisualStyleBackColor = true;
+            this.SprayCheck.AutoSize = true;
+            this.SprayCheck.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.SprayCheck.Location = new System.Drawing.Point(17, 52);
+            this.SprayCheck.Name = "SprayCheck";
+            this.SprayCheck.Size = new System.Drawing.Size(68, 25);
+            this.SprayCheck.TabIndex = 1;
+            this.SprayCheck.Text = "Spray";
+            this.SprayCheck.UseVisualStyleBackColor = true;
             // 
             // TriggerbotEnabled
             // 
@@ -254,17 +319,29 @@
             this.label1.Text = "ArseNic";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // ShowFov
+            // groupBox4
             // 
-            this.ShowFov.AutoSize = true;
-            this.ShowFov.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ShowFov.Location = new System.Drawing.Point(17, 74);
-            this.ShowFov.Name = "ShowFov";
-            this.ShowFov.Size = new System.Drawing.Size(142, 25);
-            this.ShowFov.TabIndex = 2;
-            this.ShowFov.Text = "Show FOV Circle";
-            this.ShowFov.UseVisualStyleBackColor = true;
-            this.ShowFov.CheckedChanged += new System.EventHandler(this.ShowFov_CheckedChanged);
+            this.groupBox4.Controls.Add(this.BHopCheck);
+            this.groupBox4.Font = new System.Drawing.Font("Comfortaa", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.groupBox4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(3)))), ((int)(((byte)(132)))), ((int)(((byte)(252)))));
+            this.groupBox4.Location = new System.Drawing.Point(3, 206);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.RightToLeft = System.Windows.Forms.RightToLeft.No;
+            this.groupBox4.Size = new System.Drawing.Size(129, 90);
+            this.groupBox4.TabIndex = 2;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "BHop";
+            // 
+            // BHopCheck
+            // 
+            this.BHopCheck.AutoSize = true;
+            this.BHopCheck.Font = new System.Drawing.Font("Comfortaa", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.BHopCheck.Location = new System.Drawing.Point(17, 30);
+            this.BHopCheck.Name = "BHopCheck";
+            this.BHopCheck.Size = new System.Drawing.Size(86, 25);
+            this.BHopCheck.TabIndex = 0;
+            this.BHopCheck.Text = "Enabled";
+            this.BHopCheck.UseVisualStyleBackColor = true;
             // 
             // Form1
             // 
@@ -281,9 +358,12 @@
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.FovAmountUD)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.Panel_Name.ResumeLayout(false);
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -294,7 +374,7 @@
         private System.Windows.Forms.Panel Panel_Name;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.GroupBox groupBox1;
-        private System.Windows.Forms.CheckBox checkBox2;
+        private System.Windows.Forms.CheckBox SprayCheck;
         private System.Windows.Forms.CheckBox TriggerbotEnabled;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.CheckBox WallAimCheck;
@@ -307,6 +387,10 @@
         private System.Windows.Forms.CheckBox ShowTeamSnapline;
         private System.Windows.Forms.CheckBox ShowEnemySnap;
         private System.Windows.Forms.CheckBox ShowFov;
+        private System.Windows.Forms.NumericUpDown FovAmountUD;
+        private System.Windows.Forms.CheckBox BodyShotCheck;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.CheckBox BHopCheck;
     }
 }
 
