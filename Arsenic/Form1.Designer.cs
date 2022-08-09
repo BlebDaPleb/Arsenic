@@ -350,7 +350,7 @@
             this.ClientSize = new System.Drawing.Size(541, 299);
             this.Controls.Add(this.Panel_Main);
             this.Name = "Form1";
-            this.Text = "Form1";
+            this.Text = "Arsenic";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Form1_FormClosing);
             this.Load += new System.EventHandler(this.Form1_Load);
             this.Panel_Main.ResumeLayout(false);

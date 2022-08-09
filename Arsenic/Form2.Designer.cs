@@ -48,7 +48,7 @@
             this.ClientSize = new System.Drawing.Size(800, 450);
             this.Controls.Add(this.panel1);
             this.Name = "Form2";
-            this.Text = "Form2";
+            this.Text = "Arsenic Overlay";
             this.Load += new System.EventHandler(this.Form2_Load);
             this.ResumeLayout(false);
 
