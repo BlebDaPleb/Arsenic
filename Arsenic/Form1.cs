@@ -411,7 +411,6 @@ namespace Arsenic
                 ent.z = BitConverter.ToSingle(coords, 8);
                 ent.team = tm;
                 ent.lifestate = ls;
-                ent.health = hp;
 
                 ent.magnitude = calcMag(ent);
 
